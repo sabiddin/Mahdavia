@@ -1,4 +1,4 @@
-<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+<!-- <form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
     <h2 class="text-center text-primary">Sign up</h2>
     <div class="form-group">
         <input type="text" name="username" [(ngModel)]="model.username" class="form-control">
@@ -6,14 +6,83 @@
     <div class="form-group">
         <input type="password" name="password" [(ngModel)]="model.password" class="form-control">
     </div>
-    <!-- <div class="form-group">
+  
+    <div class="form-group text-center">
+        <button class="btn btn-success mr-2" type="submit">Register</button>
+        <button class="btn btn-default mr-2" type="button" (click)="cancel()">Cancel</button>
+    </div>
+</form> -->
+
+<!-- <div class="form-group">
         <label >Who is your favorite user</label>
         <select class="form-control">
             <option *ngFor="let user of usersFromHomeComponent" [value]="user.userName">{{user.userName}}</option>
         </select>
     </div> -->
+<!-- To use the reactive Forms -->
+<!-- 1.  Use the input binding of the formGroup and provide the form name provided in the component-->
+<!-- 2. For each control remove the ngModel and replace with the property formControlName and provide the property name -->
+
+<!-- Adding Validation: Its a 3 steps process -->
+<!-- 1. Add the validators to the controls in the form group on the component -->
+<!-- 2. Go to the form controls in the form and add the class.is-invalid for each control and -->
+<!-- assign the form.get('control-name').errors (showing the invalid class by checking if there are errors) -->
+<!-- also making sure to show the invalid class for the field if and only if the field is touched by checking -->
+<!-- form.get('contol-name').touched -->
+<!-- 3. Finally adding a div elelment to show the error message ex:  -->
+<!-- <div class="invalid-feedback">Please enter a valid username</div> -->
+<!-- Note: To add your custom validator to a control make sure that you use the object name you are returing from 
+your validation function ex 'isMatching' in my case. -->
+<!-- Using Reactive forms -->
+<!-- <form [formGroup]='registerForm' (ngSubmit)="register()" autocomplete="off">
+    <h2 class="text-center text-primary">Sign up</h2>
+    <div class="form-group">
+        <input type="text"
+            [class.is-invalid]='registerForm.get("username").errors && registerForm.get("username").touched'
+            formControlName="username" placeholder="Username" class="form-control">
+        <div class="invalid-feedback">Please enter a valid username</div>
+    </div>
+    <div class="form-group">
+        <input type="password"
+            [class.is-invalid]='registerForm.get("password").errors && registerForm.get("password").touched'
+            formControlName="password" placeholder="Password" class="form-control">
+        <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('required')">Please enter a valid
+            password</div>
+        <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('minlength')">Should be between 4 characters
+            characters</div>
+        <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('maxlength')">Should be less than 8 characters
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="password"
+            [class.is-invalid]='registerForm.get("confirmPassword").errors && registerForm.get("confirmPassword").touched'
+            formControlName="confirmPassword" placeholder="Confirm Password" class="form-control">
+        <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword').hasError('required')">Please enter a
+            valid password</div>
+        <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword').hasError('isMatching')">Passwords must
+            match</div>
+    </div>
+
     <div class="form-group text-center">
         <button class="btn btn-success mr-2" type="submit">Register</button>
         <button class="btn btn-default mr-2" type="button" (click)="cancel()">Cancel</button>
     </div>
 </form>
+<pre>Form Value {{registerForm.value | json}}</pre>
+<pre>Form Value {{registerForm.status | json}}</pre> -->
+
+<!-- Using the custom app-text-input control we created -->
+<form [formGroup]='registerForm' (ngSubmit)="register()" autocomplete="off">
+    <h2 class="text-center text-primary">Sign up</h2>
+    <app-text-input [formControl]='registerForm.controls["username"]' [label]='"Username"'></app-text-input>
+    <app-text-input [formControl]='registerForm.controls["password"]' [label]='"Password"' [type]='"password"'>
+    </app-text-input>
+    <app-text-input [formControl]='registerForm.controls["confirmPassword"]' [label]='"Confirm Password"'
+        [type]='"password"'></app-text-input>
+    <div class="form-group text-center">
+        <button class="btn btn-success mr-2" type="submit">Register</button>
+        <button class="btn btn-default mr-2" type="button" (click)="cancel()">Cancel</button>
+    </div>
+</form>
+<pre>Form Value {{registerForm.value | json}}</pre>
+<pre>Form Value {{registerForm.status | json}}</pre>
